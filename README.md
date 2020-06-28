@@ -13,6 +13,18 @@ Installation on other distributions requires the 'version' variable in ethe setu
 
 ## REFERENCES
 - https://www.linode.com/docs/databases/mongodb/build-database-clusters-with-mongodb/
+#### SPATIAL QUERIES
+- https://dba.stackexchange.com/questions/243476/sharding-a-mongodb-instance-by-a-spatial-key-and-a-date
+- https://docs.mongodb.com/manual/geospatial-queries/
+- https://docs.mongodb.com/manual/core/zone-sharding/
+- https://docs.mongodb.com/manual/reference/limits/#Shard-Key-Index-Type
+
+## LATTICE DEPLOYMENT
+- hosts lattice-80 to lattice-140
+#### GOALS
+- sharding based on geohash
+- effectively load ESRI shapefiles
+- need very fast queries
 
 ## TODO
 - everything
