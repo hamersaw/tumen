@@ -1,0 +1,92 @@
+#!/bin/bash
+
+version="0.1.0"
+usage="USAGE: $(basename $0) <COMMAND> [ARGS...]
+COMMANDS:
+    (config | configure)    configure the mongodb cluster
+    help                    display this menu
+    (init | initialize)     download mongo binaries
+    start                   start the cluster
+    stop                    stop the cluster
+    version                 print application version"
+
+# compute project directory, binary directory, and hostfile locations
+scriptdir="$(dirname $0)"
+case $scriptdir in
+  /*) 
+      projectdir="$scriptdir"
+      ;;
+  *) 
+      projectdir="$(pwd)/$scriptdir"
+      ;;
+esac
+
+#projectdir="$(pwd)/$(dirname $0)"
+
+binarydir="$projectdir/bin"
+hostfile="$projectdir/etc/hosts.txt"
+
+# execute command
+case "$1" in
+    config|configure)
+        # ensure application is initialized
+        [ ! -d $bindir ] && \
+            echo "install binaries with 'init' command" && exit 1
+
+        echo "TODO - configure"
+        ;;
+    help)
+        echo "$usage"
+        exit 0
+        ;;
+    init|initialize)
+        # check if already initailized
+        [ -d "$binarydir" ] && \
+            echo "application already initialized" && exit 1
+
+        # initialize instance variables
+        downloaddir="$HOME/Downloads"
+        # TODO - change binary based on linux distribution
+        version="mongodb-linux-x86_64-debian10-4.2.8"
+
+        # download mongo archive
+        wget https://fastdl.mongodb.org/linux/$version.tgz \
+            --directory-prefix=$downloaddir
+
+        # extract files
+        tar xvf "$downloaddir/$version.tgz" -C "$downloaddir"
+
+        # copy mongo binaries and documentation
+        mkdir -p $binarydir
+        find $downloaddir/$version -type f | \
+            xargs -I {} cp {} $binarydir
+
+        # cleanup
+        rm -r "$downloaddir/$version"
+        rm "$downloaddir/$version.tgz"
+        ;;
+    start)
+        # ensure application is initialized
+        [ ! -d $bindir ] && \
+            echo "install binaries with 'init' command" && exit 1
+
+        # stop components individually per mongodb documentation
+        $projectdir/sbin/start.sh -c "config"
+        $projectdir/sbin/start.sh -c "shard"
+        $projectdir/sbin/start.sh -c "router"
+        ;;
+    stop)
+        # stop components individually per mongodb documentation
+        $projectdir/sbin/stop.sh -c "router"
+        $projectdir/sbin/stop.sh -c "shard"
+        $projectdir/sbin/stop.sh -c "config"
+        ;;
+    version)
+        echo "v$version"
+        exit 0
+        ;;
+    *)
+        echo "unknown command '$1' -- see 'help' menu"
+        exit 1
+        ;;
+esac
