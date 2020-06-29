@@ -121,8 +121,39 @@ while read line; do
         # ensure binary exists
         [ ! -f $mongos ] && echo "'mongos' binary not found" && exit 1
 
-        # start query router
-        echo "TODO - start query router"
+        # parse metadata
+        ipaddress=$(echo $line | awk '{print $2}')
+        port=$(echo $line | awk '{print $3}')
+        directory=$(echo $line | awk '{print $4}')
+
+        logfile="$projectdir/log/node-$nodeid.log"
+        pidfile="$projectdir/log/node-$nodeid.pid"
+
+        # compile configdb
+        replset=$(cat $hostfile | grep 'config' \
+            | awk '{print $4}' | sort | uniq | head -n 1)
+        while read line; do
+            # parse ip address and port from line
+            configip=$(echo $line | awk '{print $2}')
+            configport=$(echo $line | awk '{print $3}')
+
+            # append to members
+            [ ! -z "$members" ] && members="$members,"
+            members="$members$configip:$configport"
+        done < <(grep "$replset" $hostfile)
+
+        configdb="$replset/$members"
+
+        echo "starting query router - $nodeid"
+        if [ $ipaddress == "127.0.0.1" ]; then
+            # start application locally
+            $mongos $options --bind_ip $ipaddress --port $port \
+                --configdb "$configdb" --pidfilepath $pidfile \
+                    > $logfile 2>&1 &
+        else
+            # start application on remote host
+            echo "TODO - start remote node $nodeid"
+        fi
     fi
 
     # increment node id

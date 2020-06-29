@@ -1,13 +1,13 @@
-router 127.0.0.1 27017 /home/hamersaw/Downloads/mongo/router
-config 127.0.0.1 27019 config /home/hamersaw/Downloads/mongo/config-0
-config 127.0.0.1 27029 config /home/hamersaw/Downloads/mongo/config-1
-config 127.0.0.1 27039 config /home/hamersaw/Downloads/mongo/config-2
-shard 127.0.0.1 27018 shard0 /home/hamersaw/Downloads/mongo/shard0-0
-shard 127.0.0.1 27028 shard0 /home/hamersaw/Downloads/mongo/shard0-1
-shard 127.0.0.1 27038 shard0 /home/hamersaw/Downloads/mongo/shard0-2
-shard 127.0.0.1 27118 shard1 /home/hamersaw/Downloads/mongo/shard1-0
-shard 127.0.0.1 27128 shard1 /home/hamersaw/Downloads/mongo/shard1-1
-shard 127.0.0.1 27138 shard1 /home/hamersaw/Downloads/mongo/shard1-2
-shard 127.0.0.1 27218 shard2 /home/hamersaw/Downloads/mongo/shard2-0
-shard 127.0.0.1 27228 shard2 /home/hamersaw/Downloads/mongo/shard2-1
-shard 127.0.0.1 27238 shard2 /home/hamersaw/Downloads/mongo/shard2-2
+router 127.0.0.1 27017
+config 127.0.0.1 27019 configReplSet /home/hamersaw/Downloads/mongo/config-0
+config 127.0.0.1 27029 configReplSet /home/hamersaw/Downloads/mongo/config-1
+config 127.0.0.1 27039 configReplSet /home/hamersaw/Downloads/mongo/config-2
+shard 127.0.0.1 27018 shard0ReplSet /home/hamersaw/Downloads/mongo/shard0-0
+shard 127.0.0.1 27028 shard0ReplSet /home/hamersaw/Downloads/mongo/shard0-1
+shard 127.0.0.1 27038 shard0ReplSet /home/hamersaw/Downloads/mongo/shard0-2
+shard 127.0.0.1 27118 shard1ReplSet /home/hamersaw/Downloads/mongo/shard1-0
+shard 127.0.0.1 27128 shard1ReplSet /home/hamersaw/Downloads/mongo/shard1-1
+shard 127.0.0.1 27138 shard1ReplSet /home/hamersaw/Downloads/mongo/shard1-2
+shard 127.0.0.1 27218 shard2ReplSet /home/hamersaw/Downloads/mongo/shard2-0
+shard 127.0.0.1 27228 shard2ReplSet /home/hamersaw/Downloads/mongo/shard2-1
+shard 127.0.0.1 27238 shard2ReplSet /home/hamersaw/Downloads/mongo/shard2-2
