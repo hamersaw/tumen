@@ -21,8 +21,6 @@ case $scriptdir in
       ;;
 esac
 
-#projectdir="$(pwd)/$(dirname $0)"
-
 binarydir="$projectdir/bin"
 hostfile="$projectdir/etc/hosts.txt"
 

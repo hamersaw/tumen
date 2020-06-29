@@ -38,22 +38,58 @@ esac
 
 hostfile="$projectdir/etc/hosts.txt"
 
-# iterate over hosts
+# iterate over nodes
+nodeid=0
 while read line; do
     # parse application from line
     application=$(echo $line | awk '{print $1}')
 
+    # parse metadata
+    ipaddress=$(echo $line | awk '{print $2}')
+
+    pidfile="$projectdir/log/node-$nodeid.pid"
+
     if [ "$application" == "config" ] && \
             [ "$component" == "config" ]; then
         # stop configuration server
-        echo "TODO - stop configuration server"
+        echo "stopping configuration server - $nodeid"
+        if [ $ipaddress == "127.0.0.1" ]; then
+            # stop node locally
+            kill `cat $pidfile`
+            rm $pidfile
+        else
+            # stop node on remote host
+            echo "TODO - stop remote node"
+            #ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
+        fi
     elif [ "$application" == "shard" ] && \
             [ "$component" == "shard" ]; then
         # stop shard server
-        echo "TODO - stop shard server"
+        echo "stopping shard server - $nodeid"
+        if [ $ipaddress == "127.0.0.1" ]; then
+            # stop node locally
+            kill `cat $pidfile`
+            rm $pidfile
+        else
+            # stop node on remote host
+            echo "TODO - stop remote node"
+            #ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
+        fi
     elif [ "$application" == "router" ] && \
             [ "$component" == "router" ]; then
         # stop query router
-        echo "TODO - stop query router"
+        echo "stopping query router - $nodeid"
+        if [ $ipaddress == "127.0.0.1" ]; then
+            # stop node locally
+            kill `cat $pidfile`
+            rm $pidfile
+        else
+            # stop node on remote host
+            echo "TODO - stop remote node"
+            #ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
+        fi
     fi
+
+    # increment node id
+    (( nodeid += 1 ))
 done <$hostfile

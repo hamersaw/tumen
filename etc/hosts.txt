@@ -1,4 +1,4 @@
-router 127.0.0.1 27017 /home/hamersaw/Downloads/mongo/queryrtr
+router 127.0.0.1 27017 /home/hamersaw/Downloads/mongo/router
 config 127.0.0.1 27019 config /home/hamersaw/Downloads/mongo/config-0
 config 127.0.0.1 27029 config /home/hamersaw/Downloads/mongo/config-1
 config 127.0.0.1 27039 config /home/hamersaw/Downloads/mongo/config-2
