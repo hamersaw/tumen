@@ -31,6 +31,57 @@ case "$1" in
         [ ! -d $bindir ] && \
             echo "install binaries with 'init' command" && exit 1
 
+        mongo="$projectdir/bin/mongo"
+
+        # start configuration and shard servers
+        #   with authentication disabled
+        $projectdir/sbin/start.sh -c "config" -d
+        $projectdir/sbin/start.sh -c "shard" -d
+
+        sleep 5s
+
+        # initialize replication sets
+        replsets=$(cat $hostfile | grep 'config\|shard' \
+            | awk '{print $4}' | sort | uniq)
+        for replset in $replsets; do
+            unset primaryaddress members options
+            nodeid=0
+            while read line; do
+                # parse application, ip address, and port from line
+                application=$(echo $line | awk '{print $2}')
+                ip=$(echo $line | awk '{print $2}')
+                port=$(echo $line | awk '{print $3}')
+
+                # set primary address and options
+                [ -z "$primaryaddress" ] && primaryaddress="$ip:$port"
+                [ -z "$options" ] && [ "$application" == "config" ] \
+                    && options=", configsvr:true"
+
+                # append to members
+                [ ! -z "$members" ] && members="$members,"
+                members="$members{_id:$nodeid,host:\"$ip:$port\"}"
+
+                # increment node id
+                (( nodeid += 1 ))
+            done < <(grep "$replset" $hostfile)
+
+            #echo "init $replset"
+            #echo "  primaryaddress: $primaryaddress"
+            #echo "  members: $members"
+
+            $mongo $primaryaddress --eval "rs.initiate({_id:\"$replset\"$options, members:[$members]})"
+            sleep 5s
+        done
+
+        # TODO - create admin username and password
+        #$mongo $primaryaddress/admin --eval "db.createUser({user: \"mongo-admin\", pwd: \"password\", roles:[{role: \"root\", db: \"admin\"}]})"
+
+        # TODO - register shards with query routers
+
+        # stop configuration and shard servers
+        $projectdir/sbin/stop.sh -c "shard"
+        $projectdir/sbin/stop.sh -c "config"
+
         echo "TODO - configure"
         ;;
     help)
