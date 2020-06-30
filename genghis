@@ -3,12 +3,12 @@
 version="0.1.0"
 usage="USAGE: $(basename $0) <COMMAND> [ARGS...]
 COMMANDS:
-    (config | configure)    configure the mongodb cluster
-    help                    display this menu
-    (init | initialize)     download mongo binaries
-    start                   start the cluster
-    stop                    stop the cluster
-    version                 print application version"
+    configure <username> <password>     configure the mongodb cluster
+    help                                display this menu
+    initialize                          download mongo binaries
+    start                               start the cluster
+    stop                                stop the cluster
+    version                             print application version"
 
 # compute project directory, binary directory, and hostfile locations
 scriptdir="$(dirname $0)"
@@ -28,10 +28,12 @@ sleeptime="4s"
 
 # execute command
 case "$1" in
-    config|configure)
+    configure)
         # ensure application is initialized
         [ ! -d $bindir ] && \
             echo "install binaries with 'init' command" && exit 1
+
+        # generate keyfile
 
         mongo="$projectdir/bin/mongo"
 
@@ -71,8 +73,12 @@ case "$1" in
             sleep $sleeptime
         done
 
-        # TODO - create admin username and password
-        #$mongo $primaryaddress/admin --eval "db.createUser({user: \"mongo-admin\", pwd: \"password\", roles:[{role: \"root\", db: \"admin\"}]})"
+        # create administrator user
+        line=$(cat $hostfile | grep "config" | head -n 1)
+        ip=$(echo $line | awk '{print $2}')
+        port=$(echo $line | awk '{print $3}')
+
+        $mongo $ip:$port/admin --eval "db.createUser({user: \"mongo-admin\", pwd: \"password\", roles:[{role: \"root\", db: \"admin\"}]})"
 
         # start query routers with authentication disabled
         $projectdir/sbin/start.sh -c "router" -d
@@ -101,6 +107,7 @@ case "$1" in
                 port=$(echo $line | awk '{print $3}')
 
                 $mongo $ip:$port --eval "sh.addShard(\"$shard\")"
+                sleep $sleeptime
             done < <(grep "router" $hostfile)
         done
 
@@ -117,7 +124,7 @@ case "$1" in
         echo "$usage"
         exit 0
         ;;
-    init|initialize)
+    initialize)
         # check if already initailized
         [ -d "$binarydir" ] && \
             echo "application already initialized" && exit 1

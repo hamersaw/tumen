@@ -33,5 +33,4 @@ Installation on other distributions requires the 'version' variable in ethe sbin
 - need very fast queries
 
 ## TODO
-- start query routers
-- configure cluster
+- pass admin username and password on 'configure'

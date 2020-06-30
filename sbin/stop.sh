@@ -7,7 +7,7 @@ OPTIONS:
     -h                  display this help menu"
 
 # parse opts
-while getopts "c:h" opt; do
+while getopts "c:hp:u:" opt; do
     case $opt in
         c)
             component=$OPTARG
@@ -37,6 +37,7 @@ case $scriptdir in
 esac
 
 hostfile="$projectdir/etc/hosts.txt"
+mongo="$projectdir/bin/mongo"
 
 # iterate over nodes
 nodeid=0
@@ -46,6 +47,7 @@ while read line; do
 
     # parse metadata
     ipaddress=$(echo $line | awk '{print $2}')
+    port=$(echo $line | awk '{print $3}')
 
     pidfile="$projectdir/log/node-$nodeid.pid"
 

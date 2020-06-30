@@ -48,7 +48,7 @@ mongod="$projectdir/bin/mongod"
 mongos="$projectdir/bin/mongos"
 
 options=""
-if [ ! $disableauth ]; then
+if [ "$disableauth" != true ]; then
     options="--auth"
 fi
 
@@ -147,7 +147,7 @@ while read line; do
         echo "starting query router - $nodeid"
         if [ $ipaddress == "127.0.0.1" ]; then
             # start application locally
-            $mongos $options --bind_ip $ipaddress --port $port \
+            $mongos --bind_ip $ipaddress --port $port \
                 --configdb "$configdb" --pidfilepath $pidfile \
                     > $logfile 2>&1 &
         else
