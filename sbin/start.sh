@@ -4,22 +4,22 @@ usage="USAGE: $(basename $0) [OPTIONS...]
 OPTIONS:
     -c <component>      mongo component to execute on
         ['config, 'shard', 'router']
-    -d                  disable system authentication
+    -s                  start in 'setup' mode - disabled authentication
     -h                  display this help menu"
 
 # parse opts
-disableauth=false
-while getopts "c:dh" opt; do
+setup=false
+while getopts "c:hs" opt; do
     case $opt in
         c)
             component=$OPTARG
             ;;
-        d)
-            disableauth=true
-            ;;
         h)
             echo "$usage"
             exit 0
+            ;;
+        s)
+            setup=true
             ;;
         ?)
             echo "$usage"
@@ -42,15 +42,11 @@ case $scriptdir in
 esac
 
 hostfile="$projectdir/etc/hosts.txt"
+keyfile="$projectdir/etc/keyfile"
 
 # initialize instance variables
 mongod="$projectdir/bin/mongod"
 mongos="$projectdir/bin/mongos"
-
-options=""
-if [ "$disableauth" != true ]; then
-    options="--auth"
-fi
 
 # iterate over nodes
 nodeid=0
@@ -71,6 +67,8 @@ while read line; do
 
         logfile="$projectdir/log/node-$nodeid.log"
         pidfile="$projectdir/log/node-$nodeid.pid"
+
+        [ "$setup" == false ] && options="--auth --keyFile $keyfile"
 
         echo "starting configuration server - $nodeid"
         if [ $ipaddress == "127.0.0.1" ]; then
@@ -100,6 +98,8 @@ while read line; do
 
         logfile="$projectdir/log/node-$nodeid.log"
         pidfile="$projectdir/log/node-$nodeid.pid"
+
+        [ "$setup" == false ] && options="--auth --keyFile $keyfile"
 
         echo "starting shard server - $nodeid"
         if [ $ipaddress == "127.0.0.1" ]; then
@@ -144,10 +144,12 @@ while read line; do
 
         configdb="$replset/$members"
 
+        [ "$setup" == false ] && options="--keyFile $keyfile"
+
         echo "starting query router - $nodeid"
         if [ $ipaddress == "127.0.0.1" ]; then
             # start application locally
-            $mongos --bind_ip $ipaddress --port $port \
+            $mongos $options --bind_ip $ipaddress --port $port \
                 --configdb "$configdb" --pidfilepath $pidfile \
                     > $logfile 2>&1 &
         else

@@ -23,6 +23,7 @@ esac
 
 binarydir="$projectdir/bin"
 hostfile="$projectdir/etc/hosts.txt"
+keyfile="$projectdir/etc/keyfile"
 
 sleeptime="4s"
 
@@ -33,15 +34,17 @@ case "$1" in
         [ ! -d $bindir ] && \
             echo "install binaries with 'init' command" && exit 1
 
-        # generate keyfile
-
         mongo="$projectdir/bin/mongo"
+
+        # generate keyfile
+        openssl rand -base64 756 > $keyfile
+        chmod 400 $keyfile
 
         # start configuration and shard servers
         #   with authentication disabled
-        $projectdir/sbin/start.sh -c "config" -d
+        $projectdir/sbin/start.sh -c "config" -s
         sleep $sleeptime
-        $projectdir/sbin/start.sh -c "shard" -d
+        $projectdir/sbin/start.sh -c "shard" -s
         sleep $sleeptime
 
         # initialize replication sets
@@ -81,7 +84,7 @@ case "$1" in
         $mongo $ip:$port/admin --eval "db.createUser({user: \"mongo-admin\", pwd: \"password\", roles:[{role: \"root\", db: \"admin\"}]})"
 
         # start query routers with authentication disabled
-        $projectdir/sbin/start.sh -c "router" -d
+        $projectdir/sbin/start.sh -c "router" -s
         sleep $sleeptime
 
         # register shards with query routers
