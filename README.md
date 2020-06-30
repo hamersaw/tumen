@@ -14,7 +14,7 @@ Installation on other distributions requires the 'version' variable in ethe tume
 MongoDB requires configuration of replication sets and sharding schemes. tumen provides the functionality to automatically perform this configuration based on the hosts file.
 
     # configure cluster
-    ./tumen configure
+    ./tumen configure mongo-admin password
 #### START CLUSTER
     # start cluster
     ./tumen start
@@ -26,4 +26,4 @@ MongoDB requires configuration of replication sets and sharding schemes. tumen p
 - https://www.linode.com/docs/databases/mongodb/build-database-clusters-with-mongodb/
 
 ## TODO
-- pass admin username and password on 'configure'
+- install binaries based on distribution

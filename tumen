@@ -30,6 +30,9 @@ sleeptime="4s"
 # execute command
 case "$1" in
     configure)
+        # check argument length
+        (( $# != 3 )) && echo "missing command arguments" && exit 1
+
         # ensure application is initialized
         [ ! -d $bindir ] && \
             echo "install binaries with 'init' command" && exit 1
@@ -81,7 +84,7 @@ case "$1" in
         ip=$(echo $line | awk '{print $2}')
         port=$(echo $line | awk '{print $3}')
 
-        $mongo $ip:$port/admin --eval "db.createUser({user: \"mongo-admin\", pwd: \"password\", roles:[{role: \"root\", db: \"admin\"}]})"
+        $mongo $ip:$port/admin --eval "db.createUser({user: \"$2\", pwd: \"$3\", roles:[{role: \"root\", db: \"admin\"}]})"
 
         # start query routers with authentication disabled
         $projectdir/sbin/start.sh -c "router" -s
