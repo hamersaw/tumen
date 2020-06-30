@@ -16,9 +16,13 @@ MongoDB requires configuration of replication sets and sharding schemes. tumen p
     # configure cluster
     ./tumen configure mongo-admin password
 #### START CLUSTER
+Start the MongoDB cluster defined in etc/hosts.txt according to the official documentation, ordered configuration servers, shard servers, and then query routers.
+
     # start cluster
     ./tumen start
 #### STOP CLUSTER
+Stop to MongoDB cluster ordered by query routers, shard servers, and then configuration servers.
+
     # stop cluster
     ./tumen stop
 
@@ -26,4 +30,3 @@ MongoDB requires configuration of replication sets and sharding schemes. tumen p
 - https://www.linode.com/docs/databases/mongodb/build-database-clusters-with-mongodb/
 
 ## TODO
-- install binaries based on distribution

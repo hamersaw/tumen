@@ -5,7 +5,7 @@ usage="USAGE: $(basename $0) <COMMAND> [ARGS...]
 COMMANDS:
     configure <username> <password>     configure the mongodb cluster
     help                                display this menu
-    initialize                          download mongo binaries
+    initialize <version>                download mongo binaries
     start                               start the cluster
     stop                                stop the cluster
     version                             print application version"
@@ -31,7 +31,7 @@ sleeptime="4s"
 case "$1" in
     configure)
         # check argument length
-        (( $# != 3 )) && echo "missing command arguments" && exit 1
+        (( $# != 3 )) && echo "$usage" && exit 1
 
         # ensure application is initialized
         [ ! -d $bindir ] && \
@@ -135,10 +135,29 @@ case "$1" in
         [ -d "$binarydir" ] && \
             echo "application already initialized" && exit 1
 
+        # check argument length
+        (( $# != 2 )) && echo "$usage" && exit 1
+
+        # identify binary release based on linux distribution
+        [ ! -f "/etc/os-release" ] && \
+            echo "failed to find '/etc/os-release' file" && exit 1
+
+        . /etc/os-release
+        case "$ID:$VERSION_ID" in
+            debian:10)
+                version="mongodb-linux-x86_64-debian10-$2"
+                ;;
+            fedora:31)
+                version="mongodb-linux-x86_64-rehl70-$2"
+                ;;
+            *)
+                echo "unsupported distribution '$ID:$VERSION_ID'"
+                exit 1
+                ;;
+        esac
+
         # initialize instance variables
         downloaddir="$HOME/Downloads"
-        # TODO - change binary based on linux distribution
-        version="mongodb-linux-x86_64-debian10-4.2.8"
 
         # download mongo archive
         wget https://fastdl.mongodb.org/linux/$version.tgz \
