@@ -4,12 +4,10 @@ A set of scripts to manage a mongodb cluster. 'tumen' is the name for an army un
 
 ## USAGE
 #### INSTALLATION
-To install on debian execute:
+Download and install the distribution specific tar packaged release from [MongoDB Community Server](https://www.mongodb.com/try/download/community).
 
     # execute setup script to install mongo binaries
-    ./tumen initialize
-
-Installation on other distributions requires the 'version' variable in ethe tumen script to be changed to reflect the correct [MongoDB Community Server](https://www.mongodb.com/try/download/community) tar packaged release.
+    ./tumen initialize 4.2.8
 #### CONFIGURE CLUSTER
 MongoDB requires configuration of replication sets and sharding schemes. tumen provides the functionality to automatically perform this configuration based on the hosts file.
 
