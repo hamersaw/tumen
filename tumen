@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="0.1.0"
+version="0.1.1"
 usage="USAGE: $(basename $0) <COMMAND> [ARGS...]
 COMMANDS:
     configure <username> <password>     configure the mongodb cluster
@@ -157,11 +157,18 @@ case "$1" in
         esac
 
         # initialize instance variables
-        downloaddir="$HOME/Downloads"
+        downloaddir="/tmp"
 
         # download mongo archive
-        wget https://fastdl.mongodb.org/linux/$version.tgz \
-            --directory-prefix=$downloaddir
+        if [ ! -f "$downloaddir/$version.tgz" ]; then
+            wget https://fastdl.mongodb.org/linux/$version.tgz \
+                --directory-prefix=$downloaddir
+
+            if [ $? -ne 0 ]; then
+                echo "failed to download binary release '$version'."
+                exit 1
+            else
+        fi
 
         # extract files
         tar xvf "$downloaddir/$version.tgz" -C "$downloaddir"
