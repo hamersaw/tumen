@@ -61,8 +61,7 @@ while read line; do
             rm $pidfile
         else
             # stop node on remote host
-            echo "TODO - stop remote node"
-            #ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
+            ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
         fi
     elif [ "$application" == "shard" ] && \
             [ "$component" == "shard" ]; then
@@ -74,8 +73,7 @@ while read line; do
             rm $pidfile
         else
             # stop node on remote host
-            echo "TODO - stop remote node"
-            #ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
+            ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
         fi
     elif [ "$application" == "router" ] && \
             [ "$component" == "router" ]; then
@@ -87,8 +85,7 @@ while read line; do
             rm $pidfile
         else
             # stop node on remote host
-            echo "TODO - stop remote node"
-            #ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
+            ssh rammerd@$host -n "kill `cat $pidfile`; rm $pidfile"
         fi
     fi
 

@@ -83,7 +83,10 @@ while read line; do
                     --pidfilepath $pidfile > $logfile 2>&1 &
         else
             # start application on remote host
-            echo "TODO - start remote node $nodeid"
+            ssh rammerd@$host -n "[ ! -d $directory ] && mkdir -p $direcotry; \
+                $mongod --configsvr $options --replSet $replset \
+                --bind_ip $ipaddress --port $port --dbpath $directory \
+                    --pidfilepath $pidfile > $logfile 2>&1 &"
         fi
     elif [ "$application" == "shard" ] && \
             [ "$component" == "shard" ]; then
@@ -114,7 +117,10 @@ while read line; do
                     --pidfilepath $pidfile > $logfile 2>&1 &
         else
             # start application on remote host
-            echo "TODO - start remote node $nodeid"
+            ssh rammerd@$host -n "[ ! -d $directory ] && mkdir -p $direcotry; \
+                $mongod --shardsvr $options --replSet $replset \
+                --bind_ip $ipaddress --port $port --dbpath $directory \
+                    --pidfilepath $pidfile > $logfile 2>&1 &"
         fi
     elif [ "$application" == "router" ] && \
             [ "$component" == "router" ]; then
@@ -154,7 +160,9 @@ while read line; do
                     > $logfile 2>&1 &
         else
             # start application on remote host
-            echo "TODO - start remote node $nodeid"
+            ssh rammerd@$host -n "$mongos $options --bind_ip $ipaddress \
+                --port $port --configdb "$configdb" \
+                --pidfilepath $pidfile > $logfile 2>&1 &"
         fi
     fi
 
