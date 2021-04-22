@@ -1,13 +1,13 @@
 router 127.0.0.1 27017
-config 127.0.0.1 27019 configReplSet /home/hamersaw/Downloads/tumen/config-0
-config 127.0.0.1 27029 configReplSet /home/hamersaw/Downloads/tumen/config-1
-config 127.0.0.1 27039 configReplSet /home/hamersaw/Downloads/tumen/config-2
-shard 127.0.0.1 27018 shard0ReplSet /home/hamersaw/Downloads/tumen/shard0-0
-shard 127.0.0.1 27028 shard0ReplSet /home/hamersaw/Downloads/tumen/shard0-1
-shard 127.0.0.1 27038 shard0ReplSet /home/hamersaw/Downloads/tumen/shard0-2
-shard 127.0.0.1 27118 shard1ReplSet /home/hamersaw/Downloads/tumen/shard1-0
-shard 127.0.0.1 27128 shard1ReplSet /home/hamersaw/Downloads/tumen/shard1-1
-shard 127.0.0.1 27138 shard1ReplSet /home/hamersaw/Downloads/tumen/shard1-2
-shard 127.0.0.1 27218 shard2ReplSet /home/hamersaw/Downloads/tumen/shard2-0
-shard 127.0.0.1 27228 shard2ReplSet /home/hamersaw/Downloads/tumen/shard2-1
-shard 127.0.0.1 27238 shard2ReplSet /home/hamersaw/Downloads/tumen/shard2-2
+config 127.0.0.1 27019 configReplSet /home/hamersaw/downloads/tumen/config-0
+config 127.0.0.1 27029 configReplSet /home/hamersaw/downloads/tumen/config-1
+config 127.0.0.1 27039 configReplSet /home/hamersaw/downloads/tumen/config-2
+shard 127.0.0.1 27018 shard0ReplSet /home/hamersaw/downloads/tumen/shard0-0
+shard 127.0.0.1 27028 shard0ReplSet /home/hamersaw/downloads/tumen/shard0-1
+shard 127.0.0.1 27038 shard0ReplSet /home/hamersaw/downloads/tumen/shard0-2
+shard 127.0.0.1 27118 shard1ReplSet /home/hamersaw/downloads/tumen/shard1-0
+shard 127.0.0.1 27128 shard1ReplSet /home/hamersaw/downloads/tumen/shard1-1
+shard 127.0.0.1 27138 shard1ReplSet /home/hamersaw/downloads/tumen/shard1-2
+shard 127.0.0.1 27218 shard2ReplSet /home/hamersaw/downloads/tumen/shard2-0
+shard 127.0.0.1 27228 shard2ReplSet /home/hamersaw/downloads/tumen/shard2-1
+shard 127.0.0.1 27238 shard2ReplSet /home/hamersaw/downloads/tumen/shard2-2

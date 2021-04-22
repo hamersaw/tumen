@@ -144,7 +144,7 @@ case "$1" in
 
         . /etc/os-release
         case "$ID:$VERSION_ID" in
-            debian:10)
+            debian:10 | debian:)
                 version="mongodb-linux-x86_64-debian10-$2"
                 ;;
             fedora:31)
@@ -167,7 +167,7 @@ case "$1" in
             if [ $? -ne 0 ]; then
                 echo "failed to download binary release '$version'."
                 exit 1
-            else
+            fi
         fi
 
         # extract files
